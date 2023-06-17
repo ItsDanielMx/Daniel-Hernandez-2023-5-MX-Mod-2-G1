@@ -35,6 +35,10 @@ class Game:
                     self.spaceship.move_left()
                 elif event.key == pygame.K_RIGHT:
                     self.spaceship.move_right()
+                elif event.key == pygame.K_DOWN:
+                    self.spaceship.move_down()
+                elif event.key == pygame.K_UP:
+                    self.spaceship.move_up()
 
     def update(self):
         events = pygame.key.get_pressed() 
