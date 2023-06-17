@@ -1,6 +1,8 @@
 import pygame
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from game.components.spaceship import Spaceship
+from game.components.enemy import Enemy
+
 
 class Game:
     def __init__(self):
@@ -14,11 +16,13 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 0
         self.spaceship = Spaceship()
+        self.enemy = Enemy()
 
     def run(self):
         self.playing = True
         while self.playing:
             self.handle_events()
+            self.enemy.create_enemy()  # Crea un nuevo enemigo en cada iteración
             self.update()
             self.draw()
         else:
@@ -43,6 +47,7 @@ class Game:
     def update(self):
         events = pygame.key.get_pressed() 
         self.spaceship.update(events)
+        self.enemy.update()
 
     def draw(self):
         self.clock.tick(FPS) 
@@ -51,6 +56,8 @@ class Game:
         self.draw_background()
 
         self.spaceship.draw(self.screen)
+
+        self.enemy.draw(self.screen)
 
         pygame.display.update() 
         pygame.display.flip()  
