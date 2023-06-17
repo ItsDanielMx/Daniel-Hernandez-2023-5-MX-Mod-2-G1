@@ -31,13 +31,13 @@ class Game:
             if event.type == pygame.QUIT: 
                 self.playing = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_LEFT or event.key == pygame.K_a:
                     self.spaceship.move_left()
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == pygame.K_RIGHT or event.key == pygame.K_d:
                     self.spaceship.move_right()
-                elif event.key == pygame.K_DOWN:
+                elif event.key == pygame.K_DOWN or event.key == pygame.K_s:
                     self.spaceship.move_down()
-                elif event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP or event.key == pygame.K_w:
                     self.spaceship.move_up()
 
     def update(self):

@@ -38,12 +38,12 @@ class Spaceship(Sprite):
             self.rect.bottom = SCREEN_HEIGHT
 
     def update(self, keyboard_events):
-        if keyboard_events[pygame.K_LEFT]:
+        if keyboard_events[pygame.K_LEFT] or keyboard_events[pygame.K_a]:
             self.move_left()
-        if keyboard_events[pygame.K_RIGHT]:
+        if keyboard_events[pygame.K_RIGHT] or keyboard_events[pygame.K_d]:
             self.move_right()
-        if keyboard_events[pygame.K_UP]:
+        if keyboard_events[pygame.K_UP] or keyboard_events[pygame.K_w]:
             self.move_up()
-        if keyboard_events[pygame.K_DOWN]:
+        if keyboard_events[pygame.K_DOWN] or keyboard_events[pygame.K_s]:
             self.move_down()
 
