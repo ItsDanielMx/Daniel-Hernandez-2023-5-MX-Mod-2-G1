@@ -67,40 +67,4 @@ class Enemy:
         y_pos = random.randint(-2 * self.image_height, -self.image_height)
         self.rect.topleft = (x_pos, y_pos)
         self.move_direction = random.choice(["left", "right"]) # Reiniciar el temporizador
-
-    def update(self):
-        for enemy in self.enemies:
-            enemy['rect'].y += self.game_speed
-
-            if enemy['rect'].top > SCREEN_HEIGHT:
-                self.enemies.remove(enemy)
-            else:
-                current_time = pygame.time.get_ticks()
-
-                if current_time - self.direction_timer > self.direction_change_delay:
-                    new_direction = random.choice(["left", "right"])
-                    if new_direction != enemy['move_direction']:
-                        enemy['move_direction'] = new_direction
-                    else:
-                        enemy['move_direction'] = "left" if enemy['move_direction'] == "right" else "right"
-                    
-                    self.direction_timer = current_time
-
-                if enemy['move_direction'] == "left":
-                    enemy['rect'].x -= self.game_speed
-                    if enemy['rect'].left < 0:
-                        enemy['move_direction'] = "right"
-                elif enemy['move_direction'] == "right":
-                    enemy['rect'].x += self.game_speed
-                    if enemy['rect'].right > SCREEN_WIDTH:
-                        enemy['move_direction'] = "left"
                         
-    def draw(self, screen):
-        for enemy in self.enemies:
-            screen.blit(enemy['image'], enemy['rect'])
-
-    def reset(self):
-        x_pos = random.randint(0, SCREEN_WIDTH - self.image_width)
-        y_pos = random.randint(-2 * self.image_height, -self.image_height)
-        self.rect.topleft = (x_pos, y_pos)
-        self.move_direction = random.choice(["left", "right"])
