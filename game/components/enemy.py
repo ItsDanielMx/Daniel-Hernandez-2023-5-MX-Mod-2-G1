@@ -61,10 +61,4 @@ class Enemy:
     def draw(self, screen):
         for enemy in self.enemies:
             screen.blit(enemy['image'], enemy['rect'])
-
-    def reset(self):
-        x_pos = random.randint(0, SCREEN_WIDTH - self.image_width)
-        y_pos = random.randint(-2 * self.image_height, -self.image_height)
-        self.rect.topleft = (x_pos, y_pos)
-        self.move_direction = random.choice(["left", "right"]) # Reiniciar el temporizador
                         
