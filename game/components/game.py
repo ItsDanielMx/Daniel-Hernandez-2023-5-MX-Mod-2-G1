@@ -22,7 +22,7 @@ class Game:
         self.playing = True
         while self.playing:
             self.handle_events()
-            self.enemy.create_enemy()  # Crea un nuevo enemigo en cada iteración
+            self.enemy.create_enemy()
             self.update()
             self.draw()
         else:

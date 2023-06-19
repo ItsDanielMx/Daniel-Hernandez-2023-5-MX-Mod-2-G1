@@ -4,7 +4,6 @@ from game.utils.constants import ENEMY_1, ENEMY_2, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class Enemy:
     def __init__(self):
-        super().__init__()
         self.image_width = 40
         self.image_height = 50
         self.enemy_images = [ENEMY_1, ENEMY_2]
