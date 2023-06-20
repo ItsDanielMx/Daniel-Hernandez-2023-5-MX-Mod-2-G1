@@ -1,19 +1,21 @@
 import pygame
 import random
 from pygame.sprite import Sprite
-from game.utils.constants import ENEMY_1, ENEMY_2, SCREEN_HEIGHT, SCREEN_WIDTH
+from game.utils.constants import ENEMY_1, ENEMY_2, EXPLOSION, SCREEN_HEIGHT, SCREEN_WIDTH
 
 class Enemy(Sprite):
     def __init__(self):
         self.image_width = 40
         self.image_height = 50
         self.enemy_images = [ENEMY_1, ENEMY_2]
+        self.explosion = EXPLOSION
+        self.explosion = pygame.transform.scale(self.explosion, (self.image_width, self.image_height))
         self.rect = pygame.Rect(0, 0, self.image_width, self.image_height)
         self.game_speed = 9
         self.enemies = []
+        self.explosions = []
         self.enemy_creation_timer = pygame.time.get_ticks()
         self.direction_change_timer = pygame.time.get_ticks()
-        
 
     def create_enemy(self):
         current_time = pygame.time.get_ticks()
@@ -32,10 +34,10 @@ class Enemy(Sprite):
             self.enemies.append(enemy)
             self.enemy_creation_timer = current_time
 
-
-    def update(self):
+    def update(self, bullets):
         self.create_enemy()
         direction_change_delay = random.randint(500, 1000)
+
         for enemy in self.enemies:
             enemy['rect'].y += self.game_speed
             self.update_enemy_position(enemy)
@@ -53,7 +55,6 @@ class Enemy(Sprite):
                         enemy['move_direction'] = "left" if enemy['move_direction'] == "right" else "right"
 
                     self.direction_change_timer = current_time
-     
 
     def update_enemy_position(self, enemy):
         if enemy['move_direction'] == "left":
@@ -64,7 +65,6 @@ class Enemy(Sprite):
             enemy['rect'].x += self.game_speed
             if enemy['rect'].right > SCREEN_WIDTH:
                 enemy['move_direction'] = "left"
-
 
     def draw(self, screen):
         for enemy in self.enemies:

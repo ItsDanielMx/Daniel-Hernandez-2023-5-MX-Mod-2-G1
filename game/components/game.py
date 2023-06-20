@@ -1,8 +1,8 @@
 import pygame
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, FONT_STYLE, FONT_SIZE
 from game.components.spaceship import Spaceship
 from game.components.enemy import Enemy
-
+from game.components.bullet import Bullet
 
 class Game:
     def __init__(self):
@@ -17,6 +17,10 @@ class Game:
         self.y_pos_bg = 0
         self.spaceship = Spaceship()
         self.enemy = Enemy()
+        self.score = 0
+        self.bullets = pygame.sprite.Group()
+        self.font = pygame.font.Font(FONT_STYLE, FONT_SIZE)
+
 
     def run(self):
         self.playing = True
@@ -28,6 +32,7 @@ class Game:
             print("Something ocurred to quit the game!")
         pygame.display.quit()
         pygame.quit()
+
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -42,21 +47,37 @@ class Game:
                     self.spaceship.move_down()
                 elif event.key == pygame.K_UP or event.key == pygame.K_w:
                     self.spaceship.move_up()
+                elif event.key == pygame.K_SPACE:
+                        self.spaceship.shoot_bullet()
+
+
+    def update_score(self):
+        score = self.enemy.check_collision(self.spaceship, self.bullets)
+        if score is None:
+            score = 0
+        return score
+
+
+    def draw_score(self):
+        score_text = self.font.render(f"SCORE: {self.score}", True, (255, 255, 255))
+        self.screen.blit(score_text, (10, 10))
+
 
     def update(self):
-        events = pygame.key.get_pressed() 
+        events = pygame.key.get_pressed()
         self.spaceship.update(events)
-        self.enemy.update()
+        self.enemy.update(self.bullets)
+        self.spaceship.bullets.update()
+        for bullet in self.spaceship.bullets:
+            self.score += bullet.check_collision(self.enemy.enemies) 
 
     def draw(self):
         self.clock.tick(FPS) 
         self.screen.fill((255, 255, 255)) 
-        
         self.draw_background()
-
         self.spaceship.draw(self.screen)
-
         self.enemy.draw(self.screen)
+        self.draw_score()
 
         pygame.display.update() 
         pygame.display.flip()  

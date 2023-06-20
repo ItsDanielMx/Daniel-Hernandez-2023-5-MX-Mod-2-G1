@@ -7,11 +7,13 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
-
+FONT_DIR = os.path.join(os.path.dirname(__file__), "..", "utils")
 # Assets Constants
 ICON = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
 
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
+
+EXPLOSION = pygame.image.load(os.path.join(IMG_DIR, 'Other/Explosion.png'))
 
 BG = pygame.image.load(os.path.join(IMG_DIR, 'Other/Track.png'))
 
@@ -28,4 +30,5 @@ BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
 ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 
-FONT_STYLE = 'freesansbold.ttf'
+FONT_STYLE = os.path.join(FONT_DIR, "8-bit-hud.ttf")
+FONT_SIZE = 10
