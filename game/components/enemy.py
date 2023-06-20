@@ -34,6 +34,7 @@ class Enemy(Sprite):
 
 
     def update(self):
+        self.create_enemy()
         direction_change_delay = random.randint(500, 1000)
         for enemy in self.enemies:
             enemy['rect'].y += self.game_speed
