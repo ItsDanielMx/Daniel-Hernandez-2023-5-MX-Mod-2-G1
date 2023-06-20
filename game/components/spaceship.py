@@ -18,6 +18,7 @@ class Spaceship(Sprite):
         self.game_speed = 10
         self.bullets = pygame.sprite.Group()
         self.enemy = Enemy()
+        self.last_shot_time = 0
         
 
     def draw(self, screen):
@@ -59,5 +60,8 @@ class Spaceship(Sprite):
         self.bullets.update()
 
     def shoot_bullet(self):
-        bullet = Bullet(self.rect, self.enemy.enemies)
-        self.bullets.add(bullet)
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time > 250:  
+            bullet = Bullet(self.rect, self.enemy.enemies)
+            self.bullets.add(bullet)
+            self.last_shot_time = current_time

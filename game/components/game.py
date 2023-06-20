@@ -69,7 +69,7 @@ class Game:
         self.enemy.update(self.bullets)
         self.spaceship.bullets.update()
         for bullet in self.spaceship.bullets:
-            self.score += bullet.check_collision(self.enemy.enemies) 
+            self.score += bullet.check_collision(self.enemy.enemies, self.enemy.explosions) 
 
     def draw(self):
         self.clock.tick(FPS) 

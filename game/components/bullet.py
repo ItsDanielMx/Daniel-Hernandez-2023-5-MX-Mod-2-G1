@@ -1,6 +1,6 @@
 import pygame
 from pygame.sprite import Sprite
-from game.utils.constants import BULLET, SCREEN_HEIGHT
+from game.utils.constants import BULLET, SCREEN_HEIGHT, EXPLOSION
 
 class Bullet(Sprite):
     def __init__(self, spaceship_rect, enemies):
@@ -9,6 +9,8 @@ class Bullet(Sprite):
         self.image_height = 15
         self.image = BULLET
         self.image = pygame.transform.scale(self.image, (self.image_width, self.image_height))
+        self.explosion = EXPLOSION
+        self.explosion = pygame.transform.scale(self.explosion, (self.image_width, self.image_height))
         self.rect = self.image.get_rect()
         self.rect.centerx = spaceship_rect.centerx
         self.rect.bottom = spaceship_rect.top
@@ -20,10 +22,16 @@ class Bullet(Sprite):
         if self.rect.bottom < 0:
             self.kill()
 
-    def check_collision(self, enemies):
+    def check_collision(self, enemies, explosions):
         for enemy in enemies:
             if self.rect.colliderect(enemy['rect']):
                 enemies.remove(enemy)
                 self.kill()
+                explosion = {
+                    'image': self.explosion,
+                    'rect': enemy['rect'].copy(),
+                    'start_time': pygame.time.get_ticks()
+                }
+                explosions.append(explosion)
                 return 100  
-        return 
+        return 0  

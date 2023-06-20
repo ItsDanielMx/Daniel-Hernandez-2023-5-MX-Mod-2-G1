@@ -11,7 +11,7 @@ class Enemy(Sprite):
         self.explosion = EXPLOSION
         self.explosion = pygame.transform.scale(self.explosion, (self.image_width, self.image_height))
         self.rect = pygame.Rect(0, 0, self.image_width, self.image_height)
-        self.game_speed = 9
+        self.game_speed = 7
         self.enemies = []
         self.explosions = []
         self.enemy_creation_timer = pygame.time.get_ticks()
@@ -55,6 +55,10 @@ class Enemy(Sprite):
                         enemy['move_direction'] = "left" if enemy['move_direction'] == "right" else "right"
 
                     self.direction_change_timer = current_time
+        for explosion in self.explosions:
+            current_time = pygame.time.get_ticks()
+            if current_time - explosion['start_time'] > 500: 
+                self.explosions.remove(explosion)
 
     def update_enemy_position(self, enemy):
         if enemy['move_direction'] == "left":
@@ -66,6 +70,9 @@ class Enemy(Sprite):
             if enemy['rect'].right > SCREEN_WIDTH:
                 enemy['move_direction'] = "left"
 
+
     def draw(self, screen):
         for enemy in self.enemies:
             screen.blit(enemy['image'], enemy['rect'])
+        for explosion in self.explosions:
+            screen.blit(self.explosion, explosion['rect'])
