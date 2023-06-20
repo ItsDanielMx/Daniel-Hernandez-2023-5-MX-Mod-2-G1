@@ -1,8 +1,9 @@
 import pygame
 import random
+from pygame.sprite import Sprite
 from game.utils.constants import ENEMY_1, ENEMY_2, SCREEN_HEIGHT, SCREEN_WIDTH
 
-class Enemy:
+class Enemy(Sprite):
     def __init__(self):
         self.image_width = 40
         self.image_height = 50
