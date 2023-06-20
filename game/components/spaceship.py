@@ -15,7 +15,7 @@ class Spaceship(Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = SCREEN_WIDTH // 2
         self.rect.bottom = SCREEN_HEIGHT - 10
-        self.game_speed = 10
+        self.game_speed = 12
         self.bullets = pygame.sprite.Group()
         self.enemy = Enemy()
         self.last_shot_time = 0
@@ -25,15 +25,18 @@ class Spaceship(Sprite):
         screen.blit(self.image, self.rect)
         self.bullets.draw(screen)
 
+
     def move_left(self):
         self.rect.x -= self.game_speed
         if self.rect.left < 0:
             self.rect.left = 0
 
+
     def move_right(self):
         self.rect.x += self.game_speed
         if self.rect.right > SCREEN_WIDTH:
             self.rect.right = SCREEN_WIDTH
+
 
     def move_up(self):
         self.rect.y -= self.game_speed
@@ -44,6 +47,15 @@ class Spaceship(Sprite):
         self.rect.y += self.game_speed
         if self.rect.bottom > SCREEN_HEIGHT:
             self.rect.bottom = SCREEN_HEIGHT
+
+
+    def shoot_bullet(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_shot_time > 200:  
+            bullet = Bullet(self.rect, self.enemy.enemies)
+            self.bullets.add(bullet)
+            self.last_shot_time = current_time
+
 
     def update(self, keyboard_events):
         if keyboard_events[pygame.K_LEFT] or keyboard_events[pygame.K_a]:
@@ -58,10 +70,3 @@ class Spaceship(Sprite):
             self.shoot_bullet()
 
         self.bullets.update()
-
-    def shoot_bullet(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_shot_time > 250:  
-            bullet = Bullet(self.rect, self.enemy.enemies)
-            self.bullets.add(bullet)
-            self.last_shot_time = current_time

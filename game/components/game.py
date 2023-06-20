@@ -51,36 +51,31 @@ class Game:
                         self.spaceship.shoot_bullet()
 
 
-    def update_score(self):
-        score = self.enemy.check_collision(self.spaceship, self.bullets)
-        if score is None:
-            score = 0
-        return score
+    def update(self):
+        events = pygame.key.get_pressed()
+        self.spaceship.update(events)
+        self.enemy.update()
+        self.spaceship.bullets.update()
+        for bullet in self.spaceship.bullets:
+            self.score += bullet.check_collision(self.enemy.enemies, self.enemy.explosions, self.enemy.explosion) 
+
+
+    def draw(self):
+        self.clock.tick(FPS) 
+        self.screen.fill((255, 255, 255)) 
+        self.draw_background()
+        self.draw_score()
+        self.spaceship.draw(self.screen)
+        self.enemy.draw(self.screen)
+
+        pygame.display.update() 
+        pygame.display.flip()  
 
 
     def draw_score(self):
         score_text = self.font.render(f"SCORE: {self.score}", True, (255, 255, 255))
         self.screen.blit(score_text, (10, 10))
 
-
-    def update(self):
-        events = pygame.key.get_pressed()
-        self.spaceship.update(events)
-        self.enemy.update(self.bullets)
-        self.spaceship.bullets.update()
-        for bullet in self.spaceship.bullets:
-            self.score += bullet.check_collision(self.enemy.enemies, self.enemy.explosions) 
-
-    def draw(self):
-        self.clock.tick(FPS) 
-        self.screen.fill((255, 255, 255)) 
-        self.draw_background()
-        self.spaceship.draw(self.screen)
-        self.enemy.draw(self.screen)
-        self.draw_score()
-
-        pygame.display.update() 
-        pygame.display.flip()  
 
     def draw_background(self):
         image = pygame.transform.scale(BG, (SCREEN_WIDTH, SCREEN_HEIGHT))

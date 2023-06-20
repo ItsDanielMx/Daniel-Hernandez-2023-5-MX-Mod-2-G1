@@ -19,7 +19,7 @@ class Enemy(Sprite):
 
     def create_enemy(self):
         current_time = pygame.time.get_ticks()
-        time_delay = random.randint(1000, 2000)
+        time_delay = random.randint(1000, 1500)
 
         if current_time - self.enemy_creation_timer > time_delay:
             x_pos = random.randint(0, SCREEN_WIDTH - self.image_width)
@@ -34,7 +34,7 @@ class Enemy(Sprite):
             self.enemies.append(enemy)
             self.enemy_creation_timer = current_time
 
-    def update(self, bullets):
+    def update(self):
         self.create_enemy()
         direction_change_delay = random.randint(500, 1000)
 
