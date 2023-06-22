@@ -47,7 +47,7 @@ class Bullet(Sprite):
         return 0 
     
     def check_spaceship_collision(self, spaceship, explosions):
-        if self.direction == "down" and self.rect.colliderect(spaceship.rect) and spaceship.is_alive:
+        if self.rect.colliderect(spaceship.rect) and spaceship.is_alive:
             self.kill()
             explosions.append({'image': spaceship.image, 'rect': spaceship.rect, 'start_time': pygame.time.get_ticks()})
             pygame.mixer.init()
