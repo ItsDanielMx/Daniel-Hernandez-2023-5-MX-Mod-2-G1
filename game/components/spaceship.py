@@ -80,11 +80,12 @@ class Spaceship(Sprite):
                 self.last_shot_time = current_time
 
 
-    def check_ships_collision(self, enemies):
+    def check_ships_collision(self, enemies, explosions):
         if self.is_alive:
             for enemy in enemies:
                 if self.rect.colliderect(enemy['rect']):
                     enemies.remove(enemy)
+                    explosions.append({'image': enemy['image'], 'rect': enemy['rect'], 'start_time': pygame.time.get_ticks()})
                     self.explosions.append({'image': self.image, 'rect': self.rect, 'start_time': pygame.time.get_ticks()})
                     self.is_alive = False
                     pygame.mixer.init()

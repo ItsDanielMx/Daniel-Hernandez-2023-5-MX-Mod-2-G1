@@ -102,7 +102,7 @@ class Game:
                 self.game_over = True  
                 self.high_scores() 
                 break
-        if self.spaceship.check_ships_collision(self.enemy.enemies):
+        if self.spaceship.check_ships_collision(self.enemy.enemies, self.enemy.explosions):
                 self.game_over = True 
                 self.high_scores() 
         
