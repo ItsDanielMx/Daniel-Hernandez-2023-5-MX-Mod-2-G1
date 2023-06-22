@@ -28,13 +28,15 @@ class Game:
         self.scores = []
         self.high_score = 0
         self.channel2 = mixer.Channel(1)
+        self.paused = False
 
 
     def run(self):
         self.playing = True
         while self.playing:
             self.handle_events()
-            self.update()
+            if not self.paused:
+                self.update()
             self.draw()
         else:
             print("Something ocurred to quit the game!")
@@ -59,6 +61,13 @@ class Game:
                     self.spaceship.shoot_bullet()
                 elif event.key == pygame.K_r:
                     self.restart()
+                elif event.key == pygame.K_p:
+                    self.toggle_pause()
+
+
+    def toggle_pause(self):
+        self.paused = not self.paused
+
 
     def restart(self):
         self.enemy.enemies.clear()
@@ -69,6 +78,7 @@ class Game:
         self.score = 0
         self.scores.append(self.score)
         self.high_score = max(self.scores)
+
 
     def high_scores(self):
         self.scores.append(self.score)
@@ -106,6 +116,7 @@ class Game:
         self.spaceship.draw(self.screen)
         self.enemy.draw(self.screen)
         self.draw_game_over()
+        self.draw_pause()
         pygame.display.update() 
         pygame.display.flip()  
 
@@ -114,6 +125,12 @@ class Game:
         if self.spaceship.is_alive:
             score_text = self.font.render(f"SCORE: {self.score}", True, (255, 255, 255))
             self.screen.blit(score_text, (10, 10))
+
+
+    def draw_pause(self):
+        if self.paused:
+            pause_text = self.font.render("PAUSED", True, (255, 255, 255))
+            self.screen.blit(pause_text, ((SCREEN_WIDTH // 2) - 50, SCREEN_HEIGHT // 2))
 
 
     def draw_game_over(self):
