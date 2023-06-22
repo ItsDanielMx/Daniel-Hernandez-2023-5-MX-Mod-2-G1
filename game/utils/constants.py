@@ -1,17 +1,31 @@
 import pygame
 import os
-
+import pygame.mixer
+pygame.mixer.init()
 # Global Constants
 TITLE = "Spaceships Game"
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 FPS = 30
+BLINK_DURATION = 500 
 IMG_DIR = os.path.join(os.path.dirname(__file__), "..", "assets")
 FONT_DIR = os.path.join(os.path.dirname(__file__), "..", "utils")
 # Assets Constants
 ICON = pygame.image.load(os.path.join(IMG_DIR, "Spaceship/spaceship.png"))
 
 SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
+
+GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
+
+MARIO_WIN = os.path.join(IMG_DIR, 'Other', 'mario_win.mp3')
+
+PAC_MAN_GAME_OVER = os.path.join(IMG_DIR, 'Other', 'pacman-dies.mp3')
+
+EXPLOSION_SOUND = os.path.join(IMG_DIR, 'Other', 'explosion.mp3')
+
+LASER = os.path.join(IMG_DIR, 'Other', 'laser.mp3')
+
+ENEMY_LASER = os.path.join(IMG_DIR, 'Other', 'enemy_laser.mp3')
 
 EXPLOSION = pygame.image.load(os.path.join(IMG_DIR, 'Other/Explosion.png'))
 
@@ -31,4 +45,4 @@ ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
 ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 
 FONT_STYLE = os.path.join(FONT_DIR, "8-bit-hud.ttf")
-FONT_SIZE = 10
+FONT_SIZE = 30

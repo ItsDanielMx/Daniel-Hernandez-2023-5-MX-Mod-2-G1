@@ -1,8 +1,8 @@
 import pygame
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, FONT_STYLE, FONT_SIZE
+from pygame import mixer
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE, FONT_STYLE, FONT_SIZE, GAME_OVER, BLINK_DURATION, MARIO_WIN
 from game.components.spaceship import Spaceship
 from game.components.enemy import Enemy
-from game.components.bullet import Bullet
 
 class Game:
     def __init__(self):
@@ -20,6 +20,14 @@ class Game:
         self.score = 0
         self.bullets = pygame.sprite.Group()
         self.font = pygame.font.Font(FONT_STYLE, FONT_SIZE)
+        self.game_over = False
+        self.score_width = (SCREEN_WIDTH // 2) - 90
+        self.score_height = (SCREEN_HEIGHT // 2) + 200
+        self.restart_width = (SCREEN_WIDTH // 2) - 160
+        self.restart_height = (SCREEN_HEIGHT // 2) + 100
+        self.scores = []
+        self.high_score = 0
+        self.channel2 = mixer.Channel(1)
 
 
     def run(self):
@@ -48,8 +56,29 @@ class Game:
                 elif event.key == pygame.K_UP or event.key == pygame.K_w:
                     self.spaceship.move_up()
                 elif event.key == pygame.K_SPACE:
-                        self.spaceship.shoot_bullet()
+                    self.spaceship.shoot_bullet()
+                elif event.key == pygame.K_r:
+                    self.restart()
 
+    def restart(self):
+        self.enemy.enemies.clear()
+        for bullet in self.enemy.bullets:
+            bullet.kill()
+        self.spaceship.is_alive = True
+        self.game_over = False
+        self.score = 0
+        self.scores.append(self.score)
+        self.high_score = max(self.scores)
+
+    def high_scores(self):
+        self.scores.append(self.score)
+        self.high_score = max(self.scores)
+        if self.game_over:
+                if self.high_score > 0 and self.high_score == self.score:
+                    pygame.mixer.init()
+                    pygame.mixer.music.load(MARIO_WIN)
+                    self.channel2.play(mixer.Sound(MARIO_WIN))
+    
 
     def update(self):
         events = pygame.key.get_pressed()
@@ -57,7 +86,16 @@ class Game:
         self.enemy.update()
         self.spaceship.bullets.update()
         for bullet in self.spaceship.bullets:
-            self.score += bullet.check_collision(self.enemy.enemies, self.enemy.explosions, self.enemy.explosion) 
+            self.score += bullet.check_enemy_collision(self.enemy.enemies, self.enemy.explosions) 
+        for bullet in self.enemy.bullets:
+            if bullet.check_spaceship_collision(self.spaceship, self.spaceship.explosions):
+                self.game_over = True  
+                self.high_scores() 
+                break
+        if self.spaceship.check_ships_collision(self.enemy.enemies):
+                self.game_over = True 
+                self.high_scores() 
+        
 
 
     def draw(self):
@@ -67,14 +105,33 @@ class Game:
         self.draw_score()
         self.spaceship.draw(self.screen)
         self.enemy.draw(self.screen)
-
+        self.draw_game_over()
         pygame.display.update() 
         pygame.display.flip()  
 
 
     def draw_score(self):
-        score_text = self.font.render(f"SCORE: {self.score}", True, (255, 255, 255))
-        self.screen.blit(score_text, (10, 10))
+        if self.spaceship.is_alive:
+            score_text = self.font.render(f"SCORE: {self.score}", True, (255, 255, 255))
+            self.screen.blit(score_text, (10, 10))
+
+
+    def draw_game_over(self):
+        if self.game_over:
+            current_time = pygame.time.get_ticks()
+            visible = (current_time // BLINK_DURATION) % 2 == 0
+            game_over_image = pygame.transform.scale(GAME_OVER, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            self.screen.blit(game_over_image, (0, 0))
+            if visible:
+                restart_text = self.font.render("PRESS ""R"" TO RESTART", True, (255, 255, 255))
+                self.screen.blit(restart_text, (self.restart_width, self.restart_height))
+                if self.high_score > 0 and self.high_score == self.score:
+                    new_high_score_text = self.font.render("NEW HIGH SCORE!", True, (255, 0, 0))
+                    self.screen.blit(new_high_score_text, (self.restart_width + 100, self.restart_height - 250))
+            score_text = self.font.render(f"SCORE: {self.score}", True, (255, 255, 255))
+            self.screen.blit(score_text, (self.score_width, self.score_height))
+            high_score_text = self.font.render(f"HIGH SCORE: {self.high_score}", True, (255, 0, 0))
+            self.screen.blit(high_score_text, (self.score_width - 78, self.score_height - 50))
 
 
     def draw_background(self):

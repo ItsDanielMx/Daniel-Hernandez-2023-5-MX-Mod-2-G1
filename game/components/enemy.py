@@ -1,7 +1,10 @@
 import pygame
 import random
+from pygame import mixer
 from pygame.sprite import Sprite
-from game.utils.constants import ENEMY_1, ENEMY_2, EXPLOSION, SCREEN_HEIGHT, SCREEN_WIDTH
+from game.utils.constants import ENEMY_1, ENEMY_2, EXPLOSION, SCREEN_HEIGHT, SCREEN_WIDTH, ENEMY_LASER
+from game.components.bullet import Bullet
+
 
 class Enemy(Sprite):
     def __init__(self):
@@ -16,6 +19,9 @@ class Enemy(Sprite):
         self.explosions = []
         self.enemy_creation_timer = pygame.time.get_ticks()
         self.direction_change_timer = pygame.time.get_ticks()
+        self.bullets = pygame.sprite.Group()
+        self.last_shot_time = 0
+        self.channel5 = mixer.Channel(5)
 
     def create_enemy(self):
         current_time = pygame.time.get_ticks()
@@ -28,11 +34,25 @@ class Enemy(Sprite):
             enemy = {
                 'image': enemy_image,
                 'rect': self.rect.copy(),
-                'move_direction': random.choice(["left", "right"])
+                'move_direction': random.choice(["left", "right"]),
+                'last_shot_time': 0
             }
             enemy['rect'].topleft = (x_pos, -self.image_height)
             self.enemies.append(enemy)
             self.enemy_creation_timer = current_time
+
+    
+    def shoot_bullet(self, enemy):
+        current_time = pygame.time.get_ticks()
+        if current_time - enemy['last_shot_time'] > 1000:
+            bullet = Bullet(enemy['rect'], [], "down")  
+            self.bullets.add(bullet)
+            pygame.mixer.init()
+            pygame.mixer.music.load(ENEMY_LASER)
+            self.channel5.set_volume(0.1) 
+            self.channel5.play(mixer.Sound(ENEMY_LASER))
+            enemy['last_shot_time'] = current_time  
+
 
     def update(self):
         self.create_enemy()
@@ -41,7 +61,8 @@ class Enemy(Sprite):
         for enemy in self.enemies:
             enemy['rect'].y += self.game_speed
             self.update_enemy_position(enemy)
-
+            self.shoot_bullet(enemy)
+            self.bullets.update()
             if enemy['rect'].top > SCREEN_HEIGHT:
                 self.enemies.remove(enemy)
             else:
@@ -76,3 +97,4 @@ class Enemy(Sprite):
             screen.blit(enemy['image'], enemy['rect'])
         for explosion in self.explosions:
             screen.blit(self.explosion, explosion['rect'])
+        self.bullets.draw(screen)
