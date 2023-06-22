@@ -39,11 +39,9 @@ class Spaceship(Sprite):
         self.power_x = 10
         self.is_invencible = False
         self.is_doble_ammo = False
-        self.power_timer = pygame.USEREVENT + 1
+        self.shield_timer = pygame.USEREVENT + 1
         self.doble_ammo_timer = pygame.USEREVENT + 2
-        self.shield_timer = pygame.USEREVENT + 3
-        self.shield_blink_time = 0
-        self.is_shield_visible = True
+        self.velocity_timer = pygame.USEREVENT + 3
 
 
     def draw(self, screen):
@@ -108,7 +106,7 @@ class Spaceship(Sprite):
                     self.bullets.add(bullet1, bullet2)
                     pygame.mixer.init()
                     pygame.mixer.music.load(LASER)
-                    self.channel4.set_volume(0.2) 
+                    self.channel4.set_volume(0.1) 
                     self.channel4.play(mixer.Sound(LASER))
                     self.last_shot_time = current_time
             else:
@@ -118,7 +116,7 @@ class Spaceship(Sprite):
                     self.bullets.add(bullet)
                     pygame.mixer.init()
                     pygame.mixer.music.load(LASER)
-                    self.channel4.set_volume(0.2) 
+                    self.channel4.set_volume(0.1) 
                     self.channel4.play(mixer.Sound(LASER))
                     self.last_shot_time = current_time
 
@@ -131,6 +129,8 @@ class Spaceship(Sprite):
                     explosions.append({'image': enemy['image'], 'rect': enemy['rect'], 'start_time': pygame.time.get_ticks()})
                     if not self.is_invencible:
                         self.explosions.append({'image': self.image, 'rect': self.rect, 'start_time': pygame.time.get_ticks()})
+                        for bullet in self.bullets:
+                            bullet.kill()
                         pygame.mixer.init()
                         pygame.mixer.music.load(PAC_MAN_GAME_OVER)
                         self.channel1.play(mixer.Sound(PAC_MAN_GAME_OVER))

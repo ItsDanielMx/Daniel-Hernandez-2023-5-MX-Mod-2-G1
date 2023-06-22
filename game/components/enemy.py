@@ -22,6 +22,8 @@ class Enemy(Sprite):
         self.bullets = pygame.sprite.Group()
         self.last_shot_time = 0
         self.channel5 = mixer.Channel(4)
+        self.slow_timer = pygame.USEREVENT + 4
+
 
     def create_enemy(self):
         current_time = pygame.time.get_ticks()

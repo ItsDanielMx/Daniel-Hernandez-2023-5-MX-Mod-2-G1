@@ -59,6 +59,10 @@ class Game:
                 self.spaceship.is_invencible = False
             if event.type == pygame.USEREVENT + 2:
                 self.spaceship.is_doble_ammo = False
+            if event.type == pygame.USEREVENT + 3:
+                self.spaceship.game_speed = 12
+            if event.type == pygame.USEREVENT + 4:
+                self.enemy.game_speed = 7
 
 
     def toggle_pause(self):
@@ -88,7 +92,7 @@ class Game:
         self.spaceship.update(events)
         self.enemy.update()
         self.spaceship.bullets.update()
-        self.powers.check_spaceship_colli(self.spaceship)
+        self.powers.check_spaceship_colli(self.spaceship, self.enemy)
         for bullet in self.spaceship.bullets:
             self.score += bullet.check_enemy_collision(self.enemy.enemies, self.enemy.explosions) 
         self.powers.update(self.score)

@@ -19,6 +19,10 @@ LIFE = pygame.image.load(os.path.join(IMG_DIR, 'Other/life.png'))
 
 STAR = pygame.image.load(os.path.join(IMG_DIR, 'Other/star.png'))
 
+SLOW = pygame.image.load(os.path.join(IMG_DIR, 'Other/slow.png'))
+
+FAST = pygame.image.load(os.path.join(IMG_DIR, 'Other/fast.png'))
+
 MISILES = pygame.image.load(os.path.join(IMG_DIR, 'Other/misiles.png'))
 
 GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
@@ -36,6 +40,10 @@ LIFE_SOUND = os.path.join(IMG_DIR, 'Other', 'mario-vida.mp3')
 STAR_SOUND = os.path.join(IMG_DIR, 'Other', 'mario_star.mp3')
 
 LASER = os.path.join(IMG_DIR, 'Other', 'laser.mp3')
+
+FAST_SOUND = os.path.join(IMG_DIR, 'Other', 'mario-hongo.mp3')
+
+SLOW_SOUND = os.path.join(IMG_DIR, 'Other', 'slow.mp3')
 
 ENEMY_LASER = os.path.join(IMG_DIR, 'Other', 'enemy_laser.mp3')
 

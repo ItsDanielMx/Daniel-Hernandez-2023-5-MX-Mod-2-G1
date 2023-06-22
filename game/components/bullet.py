@@ -51,6 +51,8 @@ class Bullet(Sprite):
         if self.rect.colliderect(spaceship.rect) and spaceship.is_alive:
             self.kill()
             if spaceship.is_invencible == False:
+                for bullet in spaceship.bullets:
+                    bullet.kill()
                 explosions.append({'image': spaceship.image, 'rect': spaceship.rect, 'start_time': pygame.time.get_ticks()})
                 pygame.mixer.init()
                 pygame.mixer.music.load(PAC_MAN_GAME_OVER)
