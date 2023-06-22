@@ -1,14 +1,14 @@
 import pygame
 from pygame import mixer
 from pygame.sprite import Sprite
-from game.utils.constants import BULLET_ENEMY, SCREEN_HEIGHT, PAC_MAN_GAME_OVER, EXPLOSION_SOUND
+from game.utils.constants import SCREEN_HEIGHT, PAC_MAN_GAME_OVER, EXPLOSION_SOUND
 
 class Bullet(Sprite):
-    def __init__(self, shooter_rect, enemies, direction):
+    def __init__(self, shooter_rect, enemies, direction, image, column_offset=0):
         super().__init__()
         self.image_width = 7
         self.image_height = 15
-        self.image = BULLET_ENEMY
+        self.image = image
         self.image = pygame.transform.scale(self.image, (self.image_width, self.image_height))
         self.rect = self.image.get_rect()
         self.rect.centerx = shooter_rect.centerx
@@ -19,6 +19,7 @@ class Bullet(Sprite):
         self.speed = 10
         self.enemies = enemies
         self.direction = direction
+        self.rect.centerx = shooter_rect.centerx + column_offset
         self.channel1 = mixer.Channel(0)
         self.channel3 = mixer.Channel(2)
 
@@ -49,10 +50,11 @@ class Bullet(Sprite):
     def check_spaceship_collision(self, spaceship, explosions):
         if self.rect.colliderect(spaceship.rect) and spaceship.is_alive:
             self.kill()
-            explosions.append({'image': spaceship.image, 'rect': spaceship.rect, 'start_time': pygame.time.get_ticks()})
-            pygame.mixer.init()
-            pygame.mixer.music.load(PAC_MAN_GAME_OVER)
-            self.channel1.play(mixer.Sound(PAC_MAN_GAME_OVER))
-            spaceship.lost_life()
+            if spaceship.is_invencible == False:
+                explosions.append({'image': spaceship.image, 'rect': spaceship.rect, 'start_time': pygame.time.get_ticks()})
+                pygame.mixer.init()
+                pygame.mixer.music.load(PAC_MAN_GAME_OVER)
+                self.channel1.play(mixer.Sound(PAC_MAN_GAME_OVER))
+                spaceship.lost_life()
             return True
         return False

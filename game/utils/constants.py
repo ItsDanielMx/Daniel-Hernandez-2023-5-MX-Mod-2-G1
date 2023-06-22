@@ -17,15 +17,23 @@ SHIELD = pygame.image.load(os.path.join(IMG_DIR, 'Other/shield.png'))
 
 LIFE = pygame.image.load(os.path.join(IMG_DIR, 'Other/life.png'))
 
+STAR = pygame.image.load(os.path.join(IMG_DIR, 'Other/star.png'))
+
+MISILES = pygame.image.load(os.path.join(IMG_DIR, 'Other/misiles.png'))
+
 GAME_OVER = pygame.image.load(os.path.join(IMG_DIR, 'Other/GameOver.png'))
 
 MARIO_WIN = os.path.join(IMG_DIR, 'Other', 'mario_win.mp3')
 
 PAC_MAN_GAME_OVER = os.path.join(IMG_DIR, 'Other', 'pacman-dies.mp3')
 
+MISILES_SOUND = os.path.join(IMG_DIR, 'Other', 'missile.mp3')
+
 EXPLOSION_SOUND = os.path.join(IMG_DIR, 'Other', 'explosion.mp3')
 
 LIFE_SOUND = os.path.join(IMG_DIR, 'Other', 'mario-vida.mp3')
+
+STAR_SOUND = os.path.join(IMG_DIR, 'Other', 'mario_star.mp3')
 
 LASER = os.path.join(IMG_DIR, 'Other', 'laser.mp3')
 

@@ -55,6 +55,10 @@ class Game:
                     self.restart()
                 elif event.key == pygame.K_p:
                     self.toggle_pause()
+            if event.type == pygame.USEREVENT + 1:
+                self.spaceship.is_invencible = False
+            if event.type == pygame.USEREVENT + 2:
+                self.spaceship.is_doble_ammo = False
 
 
     def toggle_pause(self):
@@ -89,7 +93,7 @@ class Game:
             self.score += bullet.check_enemy_collision(self.enemy.enemies, self.enemy.explosions) 
         self.powers.update(self.score)
         for bullet in self.enemy.bullets:
-            if bullet.check_spaceship_collision(self.spaceship, self.spaceship.explosions):
+            if bullet.check_spaceship_collision(self.spaceship, self.spaceship.explosions) and self.spaceship.is_invencible == False:
                 self.spaceship.lifes -= 1  
                 if self.spaceship.lifes == 0:  
                     self.spaceship.is_alive = False
@@ -97,11 +101,14 @@ class Game:
                     self.high_scores()
                     break
         if self.spaceship.check_ships_collision(self.enemy.enemies, self.spaceship.explosions):
-            self.spaceship.lifes -= 1  
-            if self.spaceship.lifes == 0:  
-                self.spaceship.is_alive = False
-                self.game_over = True
-                self.high_scores()
+            if self.spaceship.is_invencible:
+                self.score += 100
+            elif not self.spaceship.is_invencible:
+                self.spaceship.lifes -= 1
+                if self.spaceship.lifes == 0:
+                    self.spaceship.is_alive = False
+                    self.game_over = True
+                    self.high_scores()
         
 
     def draw(self):

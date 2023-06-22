@@ -2,7 +2,7 @@ import pygame
 import random
 from pygame import mixer
 from pygame.sprite import Sprite
-from game.utils.constants import ENEMY_1, ENEMY_2, EXPLOSION, SCREEN_HEIGHT, SCREEN_WIDTH, ENEMY_LASER
+from game.utils.constants import ENEMY_1, ENEMY_2, EXPLOSION, SCREEN_HEIGHT, SCREEN_WIDTH, ENEMY_LASER, BULLET_ENEMY
 from game.components.bullet import Bullet
 
 
@@ -45,7 +45,7 @@ class Enemy(Sprite):
     def shoot_bullet(self, enemy):
         current_time = pygame.time.get_ticks()
         if current_time - enemy['last_shot_time'] > 1000:
-            bullet = Bullet(enemy['rect'], [], "down")  
+            bullet = Bullet(enemy['rect'], [], "down", BULLET_ENEMY)  
             self.bullets.add(bullet)
             pygame.mixer.init()
             pygame.mixer.music.load(ENEMY_LASER)
