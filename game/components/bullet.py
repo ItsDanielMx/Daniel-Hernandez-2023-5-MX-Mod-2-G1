@@ -53,6 +53,6 @@ class Bullet(Sprite):
             pygame.mixer.init()
             pygame.mixer.music.load(PAC_MAN_GAME_OVER)
             self.channel1.play(mixer.Sound(PAC_MAN_GAME_OVER))
-            spaceship.is_alive = False
+            spaceship.lost_life()
             return True
         return False

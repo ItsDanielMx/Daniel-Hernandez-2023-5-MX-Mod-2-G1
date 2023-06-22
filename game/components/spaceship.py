@@ -1,7 +1,7 @@
 import pygame
 from pygame import mixer
 from pygame.sprite import Sprite
-from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, EXPLOSION, PAC_MAN_GAME_OVER, LASER
+from game.utils.constants import SPACESHIP, SCREEN_HEIGHT, SCREEN_WIDTH, EXPLOSION, PAC_MAN_GAME_OVER, LASER, LIFE
 from game.components.bullet import Bullet
 from game.components.enemy import Enemy
 
@@ -26,7 +26,10 @@ class Spaceship(Sprite):
         self.is_alive = True
         self.channel1 = mixer.Channel(0)
         self.channel4 = mixer.Channel(3)
-
+        self.life = LIFE
+        self.life = pygame.transform.scale(self.life, (20, 20))
+        self.lifes = 1
+        self.power_x = 10
 
 
     def draw(self, screen):
@@ -35,6 +38,10 @@ class Spaceship(Sprite):
             self.bullets.draw(screen)
             for explosion in self.explosions:
                 screen.blit(self.explosion, explosion['rect'])
+            for _ in range(self.lifes):
+                screen.blit(self.life, (self.power_x, 50))
+                self.power_x += self.life.get_width() + 10  
+            self.power_x = 10
         else:
             for explosion in self.explosions:
                 screen.blit(self.explosion, explosion['rect'])
@@ -87,13 +94,23 @@ class Spaceship(Sprite):
                     enemies.remove(enemy)
                     explosions.append({'image': enemy['image'], 'rect': enemy['rect'], 'start_time': pygame.time.get_ticks()})
                     self.explosions.append({'image': self.image, 'rect': self.rect, 'start_time': pygame.time.get_ticks()})
-                    self.is_alive = False
                     pygame.mixer.init()
                     pygame.mixer.music.load(PAC_MAN_GAME_OVER)
                     self.channel1.play(mixer.Sound(PAC_MAN_GAME_OVER))
+                    self.lost_life()
                     return True
             return False
     
+
+    def lost_life(self):
+        self.rect.centerx = SCREEN_WIDTH // 2
+        self.rect.bottom = SCREEN_HEIGHT - 10
+
+    def reset(self):
+        self.lifes = 1
+        self.rect.centerx = SCREEN_WIDTH // 2
+        self.rect.bottom = SCREEN_HEIGHT - 10
+        self.is_alive = True
 
     def update(self, keyboard_events):
         if self.is_alive:

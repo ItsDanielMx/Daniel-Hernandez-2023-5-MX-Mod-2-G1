@@ -21,7 +21,7 @@ class Enemy(Sprite):
         self.direction_change_timer = pygame.time.get_ticks()
         self.bullets = pygame.sprite.Group()
         self.last_shot_time = 0
-        self.channel5 = mixer.Channel(5)
+        self.channel5 = mixer.Channel(4)
 
     def create_enemy(self):
         current_time = pygame.time.get_ticks()
@@ -52,6 +52,12 @@ class Enemy(Sprite):
             self.channel5.set_volume(0.1) 
             self.channel5.play(mixer.Sound(ENEMY_LASER))
             enemy['last_shot_time'] = current_time  
+
+    
+    def reset(self):
+        self.enemies.clear()
+        for bullet in self.bullets:
+            bullet.kill()
 
 
     def update(self):
