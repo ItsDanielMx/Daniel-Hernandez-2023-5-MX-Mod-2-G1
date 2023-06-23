@@ -60,6 +60,7 @@ class Enemy(Sprite):
         self.enemies.clear()
         for bullet in self.bullets:
             bullet.kill()
+        self.game_speed = 7
 
 
     def update(self):

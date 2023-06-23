@@ -99,7 +99,7 @@ class Powers(Sprite):
         self.powers.remove(power)
         pygame.mixer.init()
         pygame.mixer.music.load(STAR_SOUND)
-        self.channel7.set_volume(2)
+        self.channel7.set_volume(1)
         self.channel7.play(mixer.Sound(STAR_SOUND))
         pygame.time.set_timer(spaceship.shield_timer, 12000)
 
@@ -139,8 +139,7 @@ class Powers(Sprite):
         self.create_power(score)
         for power in self.powers:
             power['rect'].y += self.game_speed
-        if self.invencible_time <= 0:
-            pygame.mixer.music.stop()
+
 
     def draw(self, screen):
         for power in self.powers:
