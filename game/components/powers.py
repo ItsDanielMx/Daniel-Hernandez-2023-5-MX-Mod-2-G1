@@ -53,7 +53,7 @@ class Powers(Sprite):
 
 
     def create_power(self, score):
-        if score % 50 == 0 and score > self.last_power_score:
+        if score % 500 == 0 and score > self.last_power_score:
             x_pos = random.randint(0, SCREEN_WIDTH - self.image_width)
             selected_power = random.choice(self.powers_data)
             power_image = pygame.transform.scale(selected_power['image'], (self.image_width, self.image_height))

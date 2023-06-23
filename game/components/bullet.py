@@ -30,7 +30,7 @@ class Bullet(Sprite):
             if self.rect.bottom < 0:
                 self.kill()
         elif self.direction == "down":
-            self.rect.y += self.speed
+            self.rect.y += self.speed - 3
             if self.rect.top > SCREEN_HEIGHT:
                 self.kill()
 
